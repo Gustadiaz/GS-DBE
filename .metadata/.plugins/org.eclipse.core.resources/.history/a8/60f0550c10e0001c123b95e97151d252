@@ -1,0 +1,91 @@
+package br.com.fiap.bean;
+
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+
+import br.com.fiap.dao.VisitanteDao;
+
+import br.com.fiap.model.Visitante;
+
+public class VisitanteBean {
+	
+private Visitante visitante = new Visitante();
+	
+	//injeção de dependencia
+	//CDI
+	@Inject
+	private VisitanteDao dao;
+	
+	public String save(){
+		
+		dao.insert(visitante);
+		
+		mostrarMensagem();
+		
+		return "login?faces-redirect=true";
+	}
+
+	private void mostrarMensagem() {
+		FacesContext
+			.getCurrentInstance()
+			.getExternalContext()
+			.getFlash()
+			.setKeepMessages(true);
+		
+		FacesContext
+			.getCurrentInstance()
+			.addMessage(null, new FacesMessage("Visitante cadastrado"));
+	}
+	
+	public List<Visitante> getVisitantes(){
+		return dao.list();
+	}
+	
+	public String login() {
+		
+		if (dao.exist(visitante)) {
+			FacesContext	
+				.getCurrentInstance()
+				.getExternalContext()
+				.getSessionMap()
+				.put("visitante", visitante);
+			
+			return "visitante";
+		}
+		
+		FacesContext
+			.getCurrentInstance()
+			.getExternalContext()
+			.getFlash()
+			.setKeepMessages(true);
+		
+		FacesContext
+			.getCurrentInstance()
+			.addMessage(null, new FacesMessage("Login inválido"));
+		
+		return "login?faces-redirect=true";
+		
+	}
+	
+	public String logout() {
+		FacesContext	
+			.getCurrentInstance()
+			.getExternalContext()
+			.getSessionMap()
+			.remove("user");
+		
+		return "login?faces-redirect=true";
+	}
+
+	public Visitante getVisitante() {
+		return visitante;
+	}
+
+	public void setvisitante(Visitante visitante) {
+		this.visitante = visitante;
+	}
+
+}
