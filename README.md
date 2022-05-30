@@ -1,2 +1,4 @@
 # GS-DBE
-Global Solution - DBE - Gustavo e Hellen
+Global Solution - DBE 
+GUSTAVO DIAZ GONZALEZ - RM87142
+HELLEN CRISTINA PEREIRA BRITO - RM86415
